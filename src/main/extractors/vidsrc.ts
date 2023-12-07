@@ -2,11 +2,11 @@ import { load } from 'cheerio';
 import { ContentType } from '../types/tmbd';
 import { Source, Subtitle } from '../types/sources';
 import log from 'electron-log';
-import fs from 'fs';
+//import fs from 'fs';
 import { axiosInstance } from '../utils/axios';
 import { IExtractor } from './types';
 
-export class VidSrcExtractor implements IExtractor {
+class VidSrcExtractor implements IExtractor {
   logger = log.scope('VidSrc');
 
   url = 'https://vidsrc.me/';
@@ -97,3 +97,5 @@ export class VidSrcExtractor implements IExtractor {
     }
   }
 }
+
+export default VidSrcExtractor;
