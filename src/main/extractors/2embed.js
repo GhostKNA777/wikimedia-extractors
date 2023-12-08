@@ -38,13 +38,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TwoEmbedExtractor = void 0;
 var cheerio_1 = require("cheerio");
-var electron_log_1 = require("electron-log");
+
 var axios_1 = require("../utils/axios");
 var utils_1 = require("./utils");
 var TwoEmbedExtractor = /** @class */ (function () {
     function TwoEmbedExtractor() {
         this.name = '2Embed';
-        this.logger = electron_log_1.default.scope(this.name);
         this.url = 'https://www.2embed.cc/';
         this.referer = 'https://www.2embed.cc/';
     }
@@ -74,7 +73,7 @@ var TwoEmbedExtractor = /** @class */ (function () {
                             })];
                     case 2:
                         res = _b.sent();
-                        this.logger.debug((0, utils_1.formatToJSON)(res.data.match(/sources:\s*(\[.*?\])/)[1]), (0, utils_1.formatToJSON)(res.data.match(/tracks:\s*(\[.*?\])/)[1]));
+                        //this.logger.debug((0, utils_1.formatToJSON)(res.data.match(/sources:\s*(\[.*?\])/)[1]), (0, utils_1.formatToJSON)(res.data.match(/tracks:\s*(\[.*?\])/)[1]));
                         sources = JSON.parse((0, utils_1.formatToJSON)(res.data.match(/sources:\s*(\[.*?\])/)[1]));
                         tracks = JSON.parse((0, utils_1.formatToJSON)(res.data.match(/tracks:\s*(\[.*?\])/)[1]));
                         return [4 /*yield*/, (0, utils_1.getResolutionFromM3u8)(sources[0].file, true)];
@@ -116,7 +115,7 @@ var TwoEmbedExtractor = /** @class */ (function () {
                     case 5:
                         error_1 = _b.sent();
                         if (error_1 instanceof Error)
-                            this.logger.error(error_1.message);
+                            console.error(error_1.message);
                         return [2 /*return*/, []];
                     case 6: return [2 /*return*/];
                 }

@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import { Source } from '../../types/sources';
 import { ContentType } from '../../types/tmbd';
-import log from 'electron-log';
+//import log from 'electron-log';
 import { axiosInstance } from '../../utils/axios';
 import { IExtractor } from '../types';
 import { randomString } from '../utils';
@@ -11,7 +11,7 @@ import { DownloadResponse, SearchResponse, SubtitleResponse } from './types';
 // Complies with the LGPL-3.0 License see: ./LICENSE and https://github.com/recloudstream/cloudstream-extensions/blob/master/LICENSE
 
 export class SuperStreamExtractor implements IExtractor {
-  logger = log.scope('SuperStream');
+  //logger = log.scope('SuperStream');
 
   url: string = Buffer.from('aHR0cHM6Ly9zaG93Ym94LnNoZWd1Lm5ldC9hcGkvYXBpX2NsaWVudC9pbmRleC8=', 'base64').toString();
 
@@ -174,7 +174,7 @@ export class SuperStreamExtractor implements IExtractor {
         },
       ];
     } catch (error) {
-      if (error instanceof Error) this.logger.error(error.message);
+      if (error instanceof Error) console.error(error.message);
       return [];
     }
   }

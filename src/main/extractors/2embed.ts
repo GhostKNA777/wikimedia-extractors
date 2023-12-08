@@ -1,7 +1,6 @@
 import { load } from 'cheerio';
 import { Source } from '../types/sources';
 import { ContentType } from '../types/tmbd';
-import log from 'electron-log';
 import { axiosInstance } from '../utils/axios';
 import { IExtractor } from './types';
 import { formatToJSON, getResolutionFromM3u8 } from './utils';
@@ -9,7 +8,6 @@ import { formatToJSON, getResolutionFromM3u8 } from './utils';
 export class TwoEmbedExtractor implements IExtractor {
   name = '2Embed';
 
-  logger = log.scope(this.name);
 
   url: string = 'https://www.2embed.cc/';
 
@@ -32,7 +30,7 @@ export class TwoEmbedExtractor implements IExtractor {
           referer: this.referer,
         },
       });
-      this.logger.debug(formatToJSON(res.data.match(/sources:\s*(\[.*?\])/)[1]), formatToJSON(res.data.match(/tracks:\s*(\[.*?\])/)[1]));
+      //this.logger.debug(formatToJSON(res.data.match(/sources:\s*(\[.*?\])/)[1]), formatToJSON(res.data.match(/tracks:\s*(\[.*?\])/)[1]));
       const sources = JSON.parse(formatToJSON(res.data.match(/sources:\s*(\[.*?\])/)[1]));
       const tracks = JSON.parse(formatToJSON(res.data.match(/tracks:\s*(\[.*?\])/)[1]));
       const quality = await getResolutionFromM3u8(sources[0].file, true);
@@ -69,7 +67,7 @@ export class TwoEmbedExtractor implements IExtractor {
         },
       ];
     } catch (error) {
-      if (error instanceof Error) this.logger.error(error.message);
+      if (error instanceof Error) console.error(error.message);
       return [];
     }
   }

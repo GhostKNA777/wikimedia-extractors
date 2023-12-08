@@ -38,12 +38,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VidSrcExtractor = void 0;
 var cheerio_1 = require("cheerio");
-var electron_log_1 = require("electron-log");
+//var electron_log_1 = require("electron-log");
 //import fs from 'fs';
 var axios_1 = require("../utils/axios");
 var VidSrcExtractor = /** @class */ (function () {
     function VidSrcExtractor() {
-        this.logger = electron_log_1.default.scope('VidSrc');
+        //this.logger = electron_log_1.default.scope('VidSrc');
         this.url = 'https://vidsrc.me/';
         this.referer = 'https://vidsrc.stream/';
         this.origin = 'https://vidsrc.stream';

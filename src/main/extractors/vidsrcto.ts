@@ -1,5 +1,5 @@
 import { load } from 'cheerio';
-import log from 'electron-log';
+//import log from 'electron-log';
 import { Source } from '../types/sources';
 import { ContentType } from '../types/tmbd';
 import { axiosInstance } from '../utils/axios';
@@ -9,7 +9,7 @@ import { VidPlayExtractor } from './vidplay';
 import { VidstreamExtractor } from './vidstream';
 
 export class VidSrcToExtractor implements IExtractor {
-  logger = log.scope('VidSrcTo');
+  //logger = log.scope('VidSrcTo');
 
   url = 'https://vidsrc.to/embed/';
 
@@ -117,7 +117,7 @@ export class VidSrcToExtractor implements IExtractor {
 
       return sourceUrls;
     } catch (error) {
-      if (error instanceof Error) this.logger.error(error.message);
+      if (error instanceof Error) console.error(error.message);
       return [];
     }
   }

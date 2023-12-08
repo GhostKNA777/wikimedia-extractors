@@ -1,4 +1,4 @@
-import log from 'electron-log';
+//import log from 'electron-log';
 import { Source } from '../types/sources';
 import { ContentType } from '../types/tmbd';
 import crypto from 'crypto';
@@ -9,7 +9,7 @@ import { getResolution, getResolutionFromM3u8 } from './utils';
 export class BlackvidExtractor implements IExtractor {
   name = 'Blackvid';
 
-  logger = log.scope(this.name);
+  //logger = log.scope(this.name);
 
   url = 'https://prod.api.blackvid.space/v3';
 
@@ -74,7 +74,7 @@ export class BlackvidExtractor implements IExtractor {
       const filteredSources = (await Promise.all(sources)).filter((source) => source !== null);
       return filteredSources;
     } catch (error) {
-      if (error instanceof Error) this.logger.error(error.message);
+      if (error instanceof Error) console.error(error.message);
       return [];
     }
   }

@@ -1,6 +1,6 @@
 import { Source } from '../types/sources';
 import { ContentType } from '../types/tmbd';
-import log from 'electron-log';
+//import log from 'electron-log';
 import { load } from 'cheerio';
 import FormData from 'form-data';
 import { axiosInstance } from '../utils/axios';
@@ -11,7 +11,7 @@ export class UHDMoviesExtractor implements IExtractor {
 
   public url = 'https://uhdmovies.zip';
 
-  public logger = log.scope(this.name);
+  //public logger = log.scope(this.name);
 
   private async extractOddFirmDriveLeechUrl(url: string) {
     const result = await axiosInstance.get(url);
@@ -112,7 +112,7 @@ export class UHDMoviesExtractor implements IExtractor {
         },
       ];
     } catch (error) {
-      if (error instanceof Error) this.logger.error(error.message);
+      if (error instanceof Error) console.error(error.message);
       return [];
     }
   }

@@ -1,4 +1,4 @@
-import log from 'electron-log';
+//import log from 'electron-log';
 import { Source } from '../../types/sources';
 import { axiosInstance } from '../../utils/axios';
 import { IExtractor } from '../types';
@@ -11,7 +11,7 @@ export class GoFileExtractor implements IExtractor {
 
   apiUrl = 'https://api.gofile.io';
 
-  logger = log.scope(this.name);
+  //logger = log.scope(this.name);
 
   private async getGoFileWebsiteToken() {
     const res = await axiosInstance.get(`${this.url}/dist/js/alljs.js`);
@@ -50,7 +50,7 @@ export class GoFileExtractor implements IExtractor {
         };
       }
     } catch (err) {
-      if (err instanceof Error) this.logger.error(err.message);
+      if (err instanceof Error) console.error(err.message);
       return undefined;
     }
   }

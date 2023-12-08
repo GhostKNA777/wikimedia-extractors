@@ -1,5 +1,5 @@
 import { Source } from '../types/sources';
-import log from 'electron-log';
+//import log from 'electron-log';
 import { createCipheriv } from 'crypto';
 import { axiosInstance } from '../utils/axios';
 import { IExtractor } from './types';
@@ -8,7 +8,7 @@ import { getResolutionFromM3u8 } from './utils';
 export class VidPlayExtractor implements IExtractor {
   name = 'VidPlay';
 
-  logger = log.scope(this.name);
+  //logger = log.scope(this.name);
 
   url = 'https://vidplay.site';
 

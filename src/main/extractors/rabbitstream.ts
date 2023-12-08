@@ -1,13 +1,13 @@
 //import * as m3u8Parser from 'm3u8-parser';
 import crypto from 'crypto';
 import { Source } from '../types/sources';
-import log from 'electron-log';
+//import log from 'electron-log';
 import { axiosInstance } from '../utils/axios';
 import { getResolutionName } from './utils';
 import { IExtractor } from './types';
 
 export class RabbitStreamExtractor implements IExtractor {
-  logger = log.scope('VidCloud');
+  //logger = log.scope('VidCloud');
 
   url: string = 'https://rabbitstream.net/';
 
@@ -104,7 +104,7 @@ export class RabbitStreamExtractor implements IExtractor {
       };*/
     } catch (error) {
       if (error instanceof Error) {
-        this.logger.error(error.message);
+        console.error(error.message);
       }
       return undefined;
     }

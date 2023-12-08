@@ -1,4 +1,4 @@
-import log from 'electron-log';
+//import log from 'electron-log';
 import { Source } from '../../types/sources';
 import crypto from 'crypto';
 import { axiosInstance } from '../../utils/axios';
@@ -7,7 +7,7 @@ import { IExtractor } from '../types';
 export class SmashyWatchXExtractor implements IExtractor {
   name = 'Smashy (WX)';
 
-  logger = log.scope(this.name);
+  //logger = log.scope(this.name);
 
   url = 'https://embed.smashystream.com/watchx.php';
 
@@ -57,7 +57,7 @@ export class SmashyWatchXExtractor implements IExtractor {
         },
       };
     } catch (err) {
-      if (err instanceof Error) this.logger.error(err.message);
+      if (err instanceof Error) console.error(err.message);
       return undefined;
     }
   }

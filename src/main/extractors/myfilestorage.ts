@@ -1,4 +1,4 @@
-import log from 'electron-log';
+//import log from 'electron-log';
 import { Source } from '../types/sources';
 import { ContentType } from '../types/tmbd';
 import { axiosInstance } from '../utils/axios';
@@ -8,7 +8,7 @@ import { addLeadingZero } from './utils';
 export class MyFileStorageExtractor implements IExtractor {
   name = 'MyFileStorage';
 
-  logger = log.scope('MyFileStorage');
+  //logger = log.scope('MyFileStorage');
 
   url = 'https://myfilestorage.xyz';
 
@@ -28,7 +28,7 @@ export class MyFileStorageExtractor implements IExtractor {
           referer: this.referer,
         },
       });
-      this.logger.debug(res.status, res.statusText);
+      //this.logger.debug(res.status, res.statusText);
       if (res.status !== 200) throw new Error('No sources found');
 
       return [
@@ -46,7 +46,7 @@ export class MyFileStorageExtractor implements IExtractor {
         },
       ];
     } catch (e) {
-      if (e instanceof Error) this.logger.error(e.message);
+      if (e instanceof Error) console.error(e.message);
       return [];
     }
   }

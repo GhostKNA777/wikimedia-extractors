@@ -38,14 +38,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VidSrcToExtractor = void 0;
 var cheerio_1 = require("cheerio");
-var electron_log_1 = require("electron-log");
+//var electron_log_1 = require("electron-log");
 var axios_1 = require("../utils/axios");
 var filemoon_1 = require("./filemoon");
 var vidplay_1 = require("./vidplay");
 var vidstream_1 = require("./vidstream");
 var VidSrcToExtractor = /** @class */ (function () {
     function VidSrcToExtractor() {
-        this.logger = electron_log_1.default.scope('VidSrcTo');
+        //this.logger = electron_log_1.default.scope('VidSrcTo');
         this.url = 'https://vidsrc.to/embed/';
         this.mainUrl = 'https://vidsrc.to/';
         this.vidStreamExtractor = new vidstream_1.VidstreamExtractor();

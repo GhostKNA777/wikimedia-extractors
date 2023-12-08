@@ -1,11 +1,11 @@
-import { app } from 'electron';
+//import { app } from 'electron';
 import { Source } from '../types/sources';
-import log from 'electron-log';
+//import log from 'electron-log';
 import { axiosInstance } from '../utils/axios';
 import { IExtractor } from './types';
 
 export class StreamlareExtractor implements IExtractor {
-  logger = log.scope('Streamlare');
+  //logger = log.scope('Streamlare');
 
   url: string = 'https://streamlare.com/';
 
@@ -15,7 +15,7 @@ export class StreamlareExtractor implements IExtractor {
     try {
       const id = url.split('/').pop();
       // Streamlare endpoint requires the same userAgent that is used in the API request
-      const userAgent = app.userAgentFallback;
+      //const userAgent = app.userAgentFallback;
 
       const res = await axiosInstance.post(
         `${this.url}api/video/stream/get`,
@@ -24,7 +24,8 @@ export class StreamlareExtractor implements IExtractor {
         },
         {
           headers: {
-            'User-Agent': userAgent,
+            //'User-Agent': userAgent,
+            'User-Agent': "userAgent",
           },
         }
       );
@@ -41,7 +42,7 @@ export class StreamlareExtractor implements IExtractor {
       }
       return undefined;
     } catch (error) {
-      if (error instanceof Error) this.logger.error(error.message);
+      if (error instanceof Error) console.error(error.message);
       return undefined;
     }
   }

@@ -1,4 +1,4 @@
-import log from 'electron-log';
+//import log from 'electron-log';
 import { Source } from '../../types/sources';
 import { axiosInstance } from '../../utils/axios';
 import { IExtractor } from '../types';
@@ -7,7 +7,7 @@ import { getResolutionName } from '../utils';
 export class SmashyFFixExtractor implements IExtractor {
   name = 'Smashy (FFix)';
 
-  logger = log.scope(this.name);
+  //logger = log.scope(this.name);
 
   url = 'https://embed.smashystream.com/ffix1.php';
 
@@ -45,7 +45,7 @@ export class SmashyFFixExtractor implements IExtractor {
         },
       };
     } catch (err) {
-      if (err instanceof Error) this.logger.error(err.message);
+      if (err instanceof Error) console.error(err.message);
       return undefined;
     }
   }

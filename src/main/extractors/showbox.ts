@@ -1,5 +1,5 @@
 import { load } from 'cheerio';
-import log from 'electron-log';
+//import log from 'electron-log';
 import { Source } from '../types/sources';
 import { ContentType } from '../types/tmbd';
 import { axiosInstance } from '../utils/axios';
@@ -9,7 +9,7 @@ import { addLeadingZero, getResolutionFromM3u8 } from './utils';
 export class ShowBoxExtractor implements IExtractor {
   name = 'ShowBox';
 
-  logger = log.scope(this.name);
+  //logger = log.scope(this.name);
 
   url = 'https://showbox.media/';
 
@@ -81,7 +81,7 @@ export class ShowBoxExtractor implements IExtractor {
           referer: this.referer,
         });
         if (quality === 'Unknown') throw new Error('No quality found, so the stream is probably invalid');
-        this.logger.debug(febBoxData);
+        //this.logger.debug(febBoxData);
         return [
           {
             server: this.name,
@@ -96,7 +96,7 @@ export class ShowBoxExtractor implements IExtractor {
       }
       return [];
     } catch (error) {
-      if (error instanceof Error) this.logger.error(error.message);
+      if (error instanceof Error) console.error(error.message);
       return [];
     }
   }

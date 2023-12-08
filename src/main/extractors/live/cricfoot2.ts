@@ -1,5 +1,5 @@
 import { load } from 'cheerio';
-import log from 'electron-log';
+//import log from 'electron-log';
 import { LiveMainPage, Source } from '../../types/sources';
 import vm, { runInContext } from 'vm';
 import { axiosInstance } from '../../utils/axios';
@@ -9,7 +9,7 @@ import { getResolutionFromM3u8 } from '../utils';
 export class CricFoot2Extractor implements ILiveExtractor {
   name = 'CricFoot2';
 
-  logger = log.scope(this.name);
+  //logger = log.scope(this.name);
 
   mainPageUrl = 'https://cricfoot2.com/';
 
@@ -38,7 +38,7 @@ export class CricFoot2Extractor implements ILiveExtractor {
 
   async extractUrls(url: string): Promise<Source[]> {
     try {
-      this.logger.debug(`extracting url: ${url}`);
+      //this.logger.debug(`extracting url: ${url}`);
       const res = await axiosInstance.get(url);
       const $ = load(res.data);
       const link = $("a:contains('Go Watch Links')").attr('href');
@@ -48,14 +48,14 @@ export class CricFoot2Extractor implements ILiveExtractor {
       const streamLinks = watchLInksPage$("a:contains('Stream')")
         .map((i, el) => watchLInksPage$(el).attr('href'))
         .get();
-      this.logger.debug(`streamLinks: ${streamLinks}`);
+     // this.logger.debug(`streamLinks: ${streamLinks}`);
       const streamLinkPromises = streamLinks.map(async (streamLink) => {
         const streamPage = await axiosInstance.get(streamLink);
         const streamPage$ = load(streamPage.data);
         return streamPage$('iframe').attr('src');
       });
       const streamPageLinks = [...new Set((await Promise.all(streamLinkPromises)).filter((l): l is string => l !== undefined))];
-      this.logger.debug(`streamPageLinks: ${streamPageLinks}`);
+     // this.logger.debug(`streamPageLinks: ${streamPageLinks}`);
       const streamPageLinkPromises = streamPageLinks.map(async (streamPageLink) => {
         if (streamPageLink.includes('tvpclive.com')) {
           return this.extractTVpLiveUrl(streamPageLink);
@@ -74,11 +74,11 @@ export class CricFoot2Extractor implements ILiveExtractor {
         }
       });
       const streamPageLinkResults = (await Promise.all(streamPageLinkPromises)).filter((l): l is Source => l !== undefined);
-      this.logger.debug(streamPageLinkResults);
+      //this.logger.debug(streamPageLinkResults);
 
       return streamPageLinkResults;
     } catch (err) {
-      if (err instanceof Error) this.logger.error(err.message);
+      if (err instanceof Error) console.error(err.message);
       return [];
     }
   }
@@ -152,7 +152,7 @@ export class CricFoot2Extractor implements ILiveExtractor {
     });
     const $ = load(res.data);
     const iframeUrl = $('iframe').attr('src');
-    this.logger.debug(iframeUrl);
+    //this.logger.debug(iframeUrl);
     if (!iframeUrl) throw new Error('No iframe url found');
     const iframeRes = await axiosInstance.get(iframeUrl, {
       headers: {
@@ -160,7 +160,7 @@ export class CricFoot2Extractor implements ILiveExtractor {
       },
     });
     const source = this.getNonCommentedSource(iframeRes.data);
-    this.logger.debug(source);
+    //this.logger.debug(source);
     if (!source) throw new Error('No source url found');
 
     const m3u8File = await axiosInstance.get(source, {
@@ -169,7 +169,7 @@ export class CricFoot2Extractor implements ILiveExtractor {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:101.0) Gecko/20100101 Firefox/101.0',
       },
     });
-    this.logger.debug(m3u8File.data);
+    //this.logger.debug(m3u8File.data);
     if (m3u8File.data.includes('Unable to find the specified')) throw new Error('Unable to find the specified');
     const quality = await getResolutionFromM3u8(m3u8File.data, false);
 
@@ -263,7 +263,7 @@ export class CricFoot2Extractor implements ILiveExtractor {
       .first()
       .html();
 
-    this.logger.debug(script);
+    //this.logger.debug(script);
     if (!script) throw new Error('No script found');
     const sandbox = {
       src: '',

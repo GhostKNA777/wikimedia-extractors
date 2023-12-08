@@ -1,10 +1,10 @@
 import { Source } from '../types/sources';
-import log from 'electron-log';
+//import log from 'electron-log';
 import { axiosInstance } from '../utils/axios';
 import { IExtractor } from './types';
 
 export class EmbedsitoExtractor implements IExtractor {
-  logger = log.scope('Embedsito');
+  //logger = log.scope('Embedsito');
 
   url: string = 'https://embedsito.com/api/source/';
 
@@ -32,7 +32,7 @@ export class EmbedsitoExtractor implements IExtractor {
         quality,
       };
     } catch (error) {
-      if (error instanceof Error) this.logger.error(error.message);
+      if (error instanceof Error) console.error(error.message);
       return undefined;
     }
   }

@@ -1,13 +1,13 @@
 import { load } from 'cheerio';
 import { ContentType } from '../types/tmbd';
 import { Source, Subtitle } from '../types/sources';
-import log from 'electron-log';
+//import log from 'electron-log';
 //import fs from 'fs';
 import { axiosInstance } from '../utils/axios';
 import { IExtractor } from './types';
 
 class VidSrcExtractor implements IExtractor {
-  logger = log.scope('VidSrc');
+  //logger = log.scope('VidSrc');
 
   url = 'https://vidsrc.me/';
 
@@ -55,7 +55,7 @@ class VidSrcExtractor implements IExtractor {
         .replace(/(\/\/\S+?=)/g, '')
         .replace('#2', '');
       const finalUrl = Buffer.from(match, 'base64').toString();
-      this.logger.debug(finalUrl);
+      //this.logger.debug(finalUrl);
 
       if (!finalUrl.includes('list.m3u8')) throw new Error('Something went wrong during url decoding');
 
@@ -92,7 +92,7 @@ class VidSrcExtractor implements IExtractor {
         },
       ];
     } catch (error) {
-      if (error instanceof Error) this.logger.error(error.message);
+      if (error instanceof Error) console.error(error.message);
       return [];
     }
   }

@@ -1,5 +1,5 @@
 import { load } from 'cheerio';
-import log from 'electron-log';
+//import log from 'electron-log';
 import { Source } from '../../types/sources';
 import { ContentType } from '../../types/tmbd';
 import { axiosInstance } from '../../utils/axios';
@@ -20,7 +20,7 @@ import { SmashyVideo3MExtractor } from './video3m';
 import { SmashyWatchXExtractor } from './watchx';
 
 export class SmashyStreamExtractor implements IExtractor {
-  logger = log.scope('SmashyStream');
+  //logger = log.scope('SmashyStream');
 
   url = 'https://embed.smashystream.com/playere.php';
 
@@ -130,7 +130,7 @@ export class SmashyStreamExtractor implements IExtractor {
 
       return sources.filter<Source>((it): it is Source => it !== undefined);
     } catch (err) {
-      if (err instanceof Error) this.logger.error(err);
+      if (err instanceof Error) console.error(err);
       return [];
     }
   }

@@ -1,5 +1,5 @@
 import { load } from 'cheerio';
-import log from 'electron-log';
+//import log from 'electron-log';
 import { Source } from '../../types/sources';
 import { ContentType } from '../../types/tmbd';
 import { axiosInstance } from '../../utils/axios';
@@ -13,7 +13,7 @@ export class VegaMoviesExtractor implements IExtractor {
 
   url = 'https://m.vegamovies.boo/';
 
-  logger = log.scope(this.name);
+  //logger = log.scope(this.name);
 
   private goFileExtractor = new GoFileExtractor();
 
@@ -55,7 +55,7 @@ export class VegaMoviesExtractor implements IExtractor {
     if (!finalDownloadLink) {
       finalDownloadLink = $redirectLinkData('.btn.btn-success.btn-lg.h6').attr('href');
     }
-    this.logger.debug(finalDownloadLink);
+    //this.logger.debug(finalDownloadLink);
     if (!finalDownloadLink) throw new Error('No download link found');
     if (finalDownloadLink.includes('gofile')) {
       const source = await this.goFileExtractor.extractUrl(finalDownloadLink);
@@ -116,7 +116,7 @@ export class VegaMoviesExtractor implements IExtractor {
           .attr('href');
         downloadLink = vCloudUrl;
       }
-      this.logger.debug(downloadLink);
+      //this.logger.debug(downloadLink);
       const formData = new URLSearchParams();
       formData.append('link', downloadLink!);
       const downloadLinkWithToken = await axiosInstance.post(`${new URL(downloadLink!).origin}/red.php`, formData.toString(), {
@@ -140,7 +140,7 @@ export class VegaMoviesExtractor implements IExtractor {
           .toArray()
           .find((a) => downloadPage$(a).attr('href')?.includes('v-cloud.bio') || downloadPage$(a).attr('href')?.includes('fast-dl.pro'));
       }
-      this.logger.debug(vcloudUrl?.attribs.href);
+      //this.logger.debug(vcloudUrl?.attribs.href);
 
       if (vcloudUrl?.attribs.href.includes('v-cloud.bio')) {
         return [await this.extractVCloud(vcloudUrl.attribs.href)];
@@ -151,7 +151,7 @@ export class VegaMoviesExtractor implements IExtractor {
 
       throw new Error('No download link found');
     } catch (err) {
-      if (err instanceof Error) this.logger.error(err.message);
+      if (err instanceof Error) console.error(err.message);
       return [];
     }
   }

@@ -1,12 +1,12 @@
 /* eslint-disable max-classes-per-file */
-import log from 'electron-log';
+//import log from 'electron-log';
 import { Source } from '../types/sources';
 import { axiosInstance } from '../utils/axios';
 import { IExtractor } from './types';
 import { getResolutionFromM3u8 } from './utils';
 
 export class FileMoonExtractor implements IExtractor {
-  logger = log.scope('FileMoon');
+  //logger = log.scope('FileMoon');
 
   url = 'https://filemoon.sx/';
 
@@ -89,7 +89,7 @@ export class FileMoonExtractor implements IExtractor {
 
       return await extractionPromise;
     } catch (error) {
-      if (error instanceof Error) this.logger.error(error.message);
+      if (error instanceof Error) console.error(error.message);
       return undefined;
     }
   }

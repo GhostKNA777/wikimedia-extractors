@@ -1,11 +1,11 @@
 import { Source } from '../types/sources';
-import log from 'electron-log';
+//import log from 'electron-log';
 import { axiosInstance } from '../utils/axios';
 import { IExtractor } from './types';
 import { getResolutionFromM3u8 } from './utils';
 
 export class VidstreamExtractor implements IExtractor {
-  logger = log.scope('Vidstream');
+  //logger = log.scope('Vidstream');
 
   url = 'https://vidstream.pro/';
 
@@ -60,7 +60,7 @@ export class VidstreamExtractor implements IExtractor {
         },
       };
     } catch (error) {
-      if (error instanceof Error) this.logger.error(error.message);
+      if (error instanceof Error) console.error(error.message);
       return undefined;
     }
   }

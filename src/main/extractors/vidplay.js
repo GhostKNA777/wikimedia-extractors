@@ -37,13 +37,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VidPlayExtractor = void 0;
-var electron_log_1 = require("electron-log");
+//var electron_log_1 = require("electron-log");
 var axios_1 = require("../utils/axios");
 var utils_1 = require("./utils");
 var VidPlayExtractor = /** @class */ (function () {
     function VidPlayExtractor() {
         this.name = 'VidPlay';
-        this.logger = electron_log_1.default.scope(this.name);
+        //this.logger = electron_log_1.default.scope(this.name);
         this.url = 'https://vidplay.site';
         this.referer = 'https://vidplay.site/';
     }

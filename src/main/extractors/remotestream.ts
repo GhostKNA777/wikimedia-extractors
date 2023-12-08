@@ -1,4 +1,4 @@
-import log from 'electron-log';
+//import log from 'electron-log';
 import { Source } from '../types/sources';
 import { ContentType } from '../types/tmbd';
 import { axiosInstance } from '../utils/axios';
@@ -8,7 +8,7 @@ import { getResolutionFromM3u8 } from './utils';
 export class RemoteStreamExtractor implements IExtractor {
   name = 'RemoteStream';
 
-  logger = log.scope(this.name);
+  //logger = log.scope(this.name);
 
   url = 'https://remotestream.cc/e/?';
 
@@ -26,7 +26,7 @@ export class RemoteStreamExtractor implements IExtractor {
 
       if (!match || !match[1]) throw new Error('No match found');
 
-      this.logger.debug(match[1]);
+      //this.logger.debug(match[1]);
       const quality = await getResolutionFromM3u8(match[1], true, {
         referer: this.referer,
       });
@@ -48,7 +48,7 @@ export class RemoteStreamExtractor implements IExtractor {
         },
       ];
     } catch (error) {
-      if (error instanceof Error) this.logger.error(error.message);
+      if (error instanceof Error) console.error(error.message);
       return [];
     }
   }

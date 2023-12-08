@@ -1,4 +1,4 @@
-import log from 'electron-log';
+//import log from 'electron-log';
 import { Source } from '../../types/sources';
 import { axiosInstance } from '../../utils/axios';
 import { IExtractor } from '../types';
@@ -7,7 +7,7 @@ import { getResolutionFromM3u8 } from '../utils';
 export class SmashyVideo1Extractor implements IExtractor {
   name = 'Smashy (V1)';
 
-  logger = log.scope(this.name);
+ // logger = log.scope(this.name);
 
   url = 'https://embed.smashystream.com/video1.php';
 
@@ -46,7 +46,7 @@ export class SmashyVideo1Extractor implements IExtractor {
           })),
       };
     } catch (err) {
-      if (err instanceof Error) this.logger.error(err.message);
+      if (err instanceof Error) console.error(err.message);
       return undefined;
     }
   }
