@@ -1,6 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var _2embed_1 = require("./src/main/extractors/2embed");
-var vidsrc_1 = require("./src/main/extractors/vidsrc");
-var vidsrcto_1 = require("./src/main/extractors/vidsrcto");
-exports.default = { TwoEmbedExtractor: _2embed_1.TwoEmbedExtractor, VidSrcExtractor: vidsrc_1.VidSrcExtractor, VidSrcToExtractor: vidsrcto_1.VidSrcToExtractor };
+var TwoEmbedExtractor = require('./src/main/extractors/2embed').TwoEmbedExtractor;
+var _a = require('./src/main/types/sources'), Source = _a.Source, Subtitle = _a.Subtitle;
+var VidSrcExtractor = require('./src/main/extractors/vidsrc').VidSrcExtractor;
+var VidSrcToExtractor = require('./src/main/extractors/vidsrcto').VidSrcToExtractor;
+var VidPlayExtractor = require('./src/main/extractors/vidplay').VidPlayExtractor;
+module.exports = { TwoEmbedExtractor: TwoEmbedExtractor, VidSrcExtractor: VidSrcExtractor, Source: Source, Subtitle: Subtitle, VidSrcToExtractor: VidSrcToExtractor, VidPlayExtractor: VidPlayExtractor };
