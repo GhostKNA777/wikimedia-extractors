@@ -96,7 +96,7 @@ var VidSrcExtractor = /** @class */ (function () {
                             .replace(/(\/\/\S+?=)/g, '')
                             .replace('#2', '');
                         finalUrl = Buffer.from(match, 'base64').toString();
-                        this.logger.debug(finalUrl);
+                        //this.logger.debug(finalUrl);
                         if (!finalUrl.includes('list.m3u8'))
                             throw new Error('Something went wrong during url decoding');
                         return [4 /*yield*/, axios_1.axiosInstance.get("".concat(this.subtitleUrl).concat(imdbId), {
