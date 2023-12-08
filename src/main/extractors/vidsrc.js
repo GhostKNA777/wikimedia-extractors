@@ -133,7 +133,7 @@ var VidSrcExtractor = /** @class */ (function () {
                     case 5:
                         error_1 = _a.sent();
                         if (error_1 instanceof Error)
-                            this.logger.error(error_1.message);
+                            console.error(error_1.message);
                         return [2 /*return*/, []];
                     case 6: return [2 /*return*/];
                 }

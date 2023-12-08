@@ -122,7 +122,7 @@ var VidstreamExtractor = /** @class */ (function () {
                     case 4:
                         error_1 = _c.sent();
                         if (error_1 instanceof Error)
-                            this.logger.error(error_1.message);
+                        console.error(error_1.message);
                         return [2 /*return*/, undefined];
                     case 5: return [2 /*return*/];
                 }
