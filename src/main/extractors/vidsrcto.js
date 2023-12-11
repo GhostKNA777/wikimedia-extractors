@@ -38,14 +38,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VidSrcToExtractor = void 0;
 var cheerio_1 = require("cheerio");
-//var electron_log_1 = require("electron-log");
 var axios_1 = require("../utils/axios");
 var filemoon_1 = require("./filemoon");
 var vidplay_1 = require("./vidplay");
 var vidstream_1 = require("./vidstream");
 var VidSrcToExtractor = /** @class */ (function () {
     function VidSrcToExtractor() {
-        //this.logger = electron_log_1.default.scope('VidSrcTo');
+        //logger = log.scope('VidSrcTo');
         this.url = 'https://vidsrc.to/embed/';
         this.mainUrl = 'https://vidsrc.to/';
         this.vidStreamExtractor = new vidstream_1.VidstreamExtractor();
@@ -93,76 +92,105 @@ var VidSrcToExtractor = /** @class */ (function () {
         var decodedText = new TextDecoder().decode(decoded);
         return decodeURIComponent(decodeURIComponent(decodedText));
     };
-    VidSrcToExtractor.prototype.extractUrls = function (imdbId, type, season, episode) {
+    VidSrcToExtractor.prototype.extractUrlss = function (imdbId, type, season, episode, server) {
         return __awaiter(this, void 0, void 0, function () {
-            var mainUrl, res, $, dataId, sources, sourceUrlsPromise, sourceUrls, subtitles_1, error_1;
+            var sourcesData, mainUrl, res, $, dataId, sources, subtitles_1, error_1;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 5, , 6]);
+                        sourcesData = [];
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 5, , 6]);
+                        console.log("imdbId:" + imdbId);
                         mainUrl = type === 'movie' ? "".concat(this.url, "movie/").concat(imdbId) : "".concat(this.url, "tv/").concat(imdbId, "/").concat(season, "/").concat(episode);
                         return [4 /*yield*/, axios_1.axiosInstance.get(mainUrl)];
-                    case 1:
+                    case 2:
                         res = _a.sent();
                         $ = (0, cheerio_1.load)(res.data);
                         dataId = $('a[data-id]').attr('data-id');
-                        console.log(dataId);
                         return [4 /*yield*/, axios_1.axiosInstance.get("".concat(this.mainUrl, "ajax/embed/episode/").concat(dataId, "/sources"))];
-                    case 2:
+                    case 3:
                         sources = _a.sent();
                         if (sources.data.status !== 200)
                             throw new Error('No sources found');
-                        sourceUrlsPromise = sources.data.result.map(function (source) { return __awaiter(_this, void 0, void 0, function () {
-                            var encryptedUrl, decryptedUrl, vidStreamUrl, fileMoonUrl, vidPlayUrl;
+                        /*const sourceUrlsPromise = sources.data.result.map(async (source: any) => {
+                          const encryptedUrl = await axiosInstance.get(`${this.mainUrl}ajax/embed/source/${source.id}`);
+                          //console.log(encryptedUrl);
+                          const decryptedUrl = this.decryptSourceUrl(encryptedUrl.data.result.url);
+                          //console.log("decypt:" +decryptedUrl);
+                          if (source.title === 'Vidstream') {
+                            const vidStreamUrl = await this.vidStreamExtractor.extractUrl(decryptedUrl);
+                            //console.log("vidStreamUrl:"+vidStreamUrl);
+                            return vidStreamUrl;
+                          }
+                          if (source.title === 'Filemoon') {
+                            const fileMoonUrl = await this.fileMoonExtractor.extractUrl(decryptedUrl);
+                            console.log("FilemoonUrl:"+fileMoonUrl?.source.url);
+                            return fileMoonUrl;
+                          }
+                          if (source.title === 'Vidplay') {
+                            const vidPlayUrl = await this.vidPlayExtractor.extractUrl(decryptedUrl);
+                            console.log("vidPlayUrl:"+vidPlayUrl?.source.url);
+                            return vidPlayUrl;
+                          }
+                  
+                        
+                          console.log("START:"+sourceUrlsPromise);
+                          return sourceUrlsPromise;
+                        });*/
+                        sources.data.result.forEach(function (source) { return __awaiter(_this, void 0, void 0, function () {
+                            var encryptedUrl, decryptedUrl, vidPlayUrl, filemoon;
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
-                                    case 0: return [4 /*yield*/, axios_1.axiosInstance.get("".concat(this.mainUrl, "ajax/embed/source/").concat(source.id))];
+                                    case 0:
+                                        console.log(source.title);
+                                        return [4 /*yield*/, axios_1.axiosInstance.get("".concat(this.mainUrl, "ajax/embed/source/").concat(source.id))];
                                     case 1:
                                         encryptedUrl = _a.sent();
                                         decryptedUrl = this.decryptSourceUrl(encryptedUrl.data.result.url);
-                                        console.log("decypt:" + decryptedUrl);
-                                        if (!(source.title === 'Vidstream')) return [3 /*break*/, 3];
-                                        return [4 /*yield*/, this.vidStreamExtractor.extractUrl(decryptedUrl)];
-                                    case 2:
-                                        vidStreamUrl = _a.sent();
-                                        console.log("vidStreamUrl:" + vidStreamUrl);
-                                        _a.label = 3;
-                                    case 3:
-                                        if (!(source.title === 'Filemoon')) return [3 /*break*/, 5];
-                                        return [4 /*yield*/, this.fileMoonExtractor.extractUrl(decryptedUrl)];
-                                    case 4:
-                                        fileMoonUrl = _a.sent();
-                                        console.log("vidPlayUrl:" + (fileMoonUrl === null || fileMoonUrl === void 0 ? void 0 : fileMoonUrl.source.url));
-                                        _a.label = 5;
-                                    case 5:
-                                        if (!(source.title === 'Vidplay')) return [3 /*break*/, 7];
+                                        if (!(source.title === 'Vidplay')) return [3 /*break*/, 3];
                                         return [4 /*yield*/, this.vidPlayExtractor.extractUrl(decryptedUrl)];
-                                    case 6:
+                                    case 2:
                                         vidPlayUrl = _a.sent();
                                         console.log("vidPlayUrl:" + (vidPlayUrl === null || vidPlayUrl === void 0 ? void 0 : vidPlayUrl.source.url));
-                                        return [2 /*return*/, vidPlayUrl];
-                                    case 7: return [2 /*return*/, undefined];
+                                        sourcesData.push(vidPlayUrl);
+                                        _a.label = 3;
+                                    case 3:
+                                        if (source.title === 'Filemoon') {
+                                            filemoon = void 0;
+                                            filemoon = {
+                                                server: 'Filemoon',
+                                                source: {
+                                                    url: decryptedUrl,
+                                                },
+                                                type: 'mp4',
+                                                quality: '1080p',
+                                                thumbnails: {
+                                                    url: "No Found",
+                                                },
+                                            };
+                                            sourcesData.push(filemoon);
+                                        }
+                                        return [2 /*return*/];
                                 }
                             });
                         }); });
-                        return [4 /*yield*/, Promise.all(sourceUrlsPromise)];
-                    case 3:
-                        sourceUrls = (_a.sent()).filter(function (it) { return it !== undefined; });
                         return [4 /*yield*/, axios_1.axiosInstance.get("".concat(this.mainUrl, "ajax/embed/episode/").concat(dataId, "/subtitles"))];
                     case 4:
                         subtitles_1 = _a.sent();
-                        console.log("sources:" + sourceUrls[0]);
-                        console.log("subtitles:" + subtitles_1.data);
-                        sourceUrls.forEach(function (sourceUrl) {
+                        //console.log("sources:"+sourceUrls[0]);
+                        //console.log("subtitles:"+subtitles.data);
+                        sourcesData.forEach(function (sourceUrl) {
                             sourceUrl.subtitles = subtitles_1.data;
                         });
-                        return [2 /*return*/, sourceUrls];
+                        return [2 /*return*/, sourcesData];
                     case 5:
                         error_1 = _a.sent();
                         if (error_1 instanceof Error)
-                        console.error(error_1.message);
-                        return [2 /*return*/, []];
+                            console.error(error_1.message);
+                        return [2 /*return*/, sourcesData];
                     case 6: return [2 /*return*/];
                 }
             });

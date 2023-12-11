@@ -26,7 +26,7 @@ export class RemoteStreamExtractor implements IExtractor {
 
       if (!match || !match[1]) throw new Error('No match found');
 
-      //this.logger.debug(match[1]);
+      console.log(match[1]);
       const quality = await getResolutionFromM3u8(match[1], true, {
         referer: this.referer,
       });

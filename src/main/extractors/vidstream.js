@@ -37,12 +37,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VidstreamExtractor = void 0;
-//var electron_log_1 = require("electron-log");
+//import log from 'electron-log';
 var axios_1 = require("../utils/axios");
 var utils_1 = require("./utils");
 var VidstreamExtractor = /** @class */ (function () {
     function VidstreamExtractor() {
-        //this.logger = electron_log_1.default.scope('Vidstream');
+        //logger = log.scope('Vidstream');
         this.url = 'https://vidstream.pro/';
         this.referer = 'https://vidstream.pro/';
         this.eltikUrl = 'https://9anime.eltik.net/';
@@ -122,7 +122,7 @@ var VidstreamExtractor = /** @class */ (function () {
                     case 4:
                         error_1 = _c.sent();
                         if (error_1 instanceof Error)
-                        console.error(error_1.message);
+                            console.error(error_1.message);
                         return [2 /*return*/, undefined];
                     case 5: return [2 /*return*/];
                 }

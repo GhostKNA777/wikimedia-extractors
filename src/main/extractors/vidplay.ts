@@ -4,6 +4,7 @@ import { createCipheriv } from 'crypto';
 import { axiosInstance } from '../utils/axios';
 import { IExtractor } from './types';
 import { getResolutionFromM3u8 } from './utils';
+//import {Keys} from 'keyutil'
 
 export class VidPlayExtractor implements IExtractor {
   name = 'VidPlay';
@@ -107,10 +108,11 @@ export class VidPlayExtractor implements IExtractor {
     return url;
   }
 
-  async extractUrl(url: string): Promise<Source | undefined> {
+  async extractUrl(url: string): Promise<Source> {
     try {
+      //console.info("url:" + url);
       const fileUrl = await this.getFileUrl(`${url}&autostart=true`);
-      //console.info("src:" + fileUrl);
+      //console.info("extractUrl:" + fileUrl);
       const res = await axiosInstance.get(fileUrl, {
         headers: {
           referer: url,
@@ -118,7 +120,7 @@ export class VidPlayExtractor implements IExtractor {
       });
       //console.info("src2:" + res.data.result[0]);
       const source = res.data.result.sources[0].file;
-      console.info("src2:" + source);
+      //console.info("src2:" + source);
 
       const quality = await getResolutionFromM3u8(source, true);
 
@@ -136,7 +138,17 @@ export class VidPlayExtractor implements IExtractor {
       };
     } catch (error) {
       if (error instanceof Error) console.log(error.message);
-      return undefined;
+      return {
+        server: this.name,
+        source: {
+          url: 'NoFound',
+        },
+        type: 'm3u8',
+        quality: 'Unknown',
+        thumbnails: {
+          url: "thumbnail?.file",
+        },
+      };
     }
   }
 }

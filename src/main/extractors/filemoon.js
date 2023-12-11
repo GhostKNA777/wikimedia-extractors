@@ -37,13 +37,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileMoonExtractor = void 0;
-/* eslint-disable max-classes-per-file */
-//var electron_log_1 = require("electron-log");
 var axios_1 = require("../utils/axios");
 var utils_1 = require("./utils");
 var FileMoonExtractor = /** @class */ (function () {
     function FileMoonExtractor() {
-        //this.logger = electron_log_1.default.scope('FileMoon');
+        //logger = log.scope('FileMoon');
         this.url = 'https://filemoon.sx/';
     }
     FileMoonExtractor.prototype.extractUrl = function (url) {

@@ -37,13 +37,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VidPlayExtractor = void 0;
-//var electron_log_1 = require("electron-log");
 var axios_1 = require("../utils/axios");
 var utils_1 = require("./utils");
+//import {Keys} from 'keyutil'
 var VidPlayExtractor = /** @class */ (function () {
     function VidPlayExtractor() {
         this.name = 'VidPlay';
-        //this.logger = electron_log_1.default.scope(this.name);
+        //logger = log.scope(this.name);
         this.url = 'https://vidplay.site';
         this.referer = 'https://vidplay.site/';
     }
@@ -179,7 +179,6 @@ var VidPlayExtractor = /** @class */ (function () {
                     case 2:
                         res = _c.sent();
                         source = res.data.result.sources[0].file;
-                        console.info("src2:" + source);
                         return [4 /*yield*/, (0, utils_1.getResolutionFromM3u8)(source, true)];
                     case 3:
                         quality = _c.sent();
@@ -199,7 +198,17 @@ var VidPlayExtractor = /** @class */ (function () {
                         error_1 = _c.sent();
                         if (error_1 instanceof Error)
                             console.log(error_1.message);
-                        return [2 /*return*/, undefined];
+                        return [2 /*return*/, {
+                                server: this.name,
+                                source: {
+                                    url: 'NoFound',
+                                },
+                                type: 'm3u8',
+                                quality: 'Unknown',
+                                thumbnails: {
+                                    url: "thumbnail?.file",
+                                },
+                            }];
                     case 5: return [2 /*return*/];
                 }
             });
