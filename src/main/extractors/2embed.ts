@@ -23,6 +23,7 @@ export class TwoEmbedExtractor implements IExtractor {
       const $ = load(res.data);
       const iframeUrl = $('iframe').attr('data-src');
       const id = iframeUrl?.match(/\?id=(.*?)&/)?.[1];
+      console.log("IDok:",id);
       if (!id) throw new Error('No id found');
 
       res = await axiosInstance.get(`https://wishfast.top/e/${id}`, {

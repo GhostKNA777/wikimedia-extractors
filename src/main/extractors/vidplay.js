@@ -39,7 +39,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VidPlayExtractor = void 0;
 var axios_1 = require("../utils/axios");
 var utils_1 = require("./utils");
-//import {Keys} from 'keyutil'
 var VidPlayExtractor = /** @class */ (function () {
     function VidPlayExtractor() {
         this.name = 'VidPlay';
@@ -52,9 +51,13 @@ var VidPlayExtractor = /** @class */ (function () {
             var res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, axios_1.axiosInstance.get('https://raw.githubusercontent.com/Claudemirovsky/worstsource-keys/keys/keys.json')];
+                    case 0: return [4 /*yield*/, axios_1.axiosInstance.get('https://raw.githubusercontent.com/J4zzyB1te7s/keys/keys/keys.json')];
                     case 1:
                         res = _a.sent();
+                        /* const res = {
+                           data: ["Ulfq8O91cGKvi94f", "mYvO5ELP8hXtExZm"]
+                         };*/
+                        console.log(res.data);
                         return [2 /*return*/, res.data];
                 }
             });
@@ -198,17 +201,7 @@ var VidPlayExtractor = /** @class */ (function () {
                         error_1 = _c.sent();
                         if (error_1 instanceof Error)
                             console.log(error_1.message);
-                        return [2 /*return*/, {
-                                server: this.name,
-                                source: {
-                                    url: 'NoFound',
-                                },
-                                type: 'm3u8',
-                                quality: 'Unknown',
-                                thumbnails: {
-                                    url: "thumbnail?.file",
-                                },
-                            }];
+                        return [2 /*return*/, undefined];
                     case 5: return [2 /*return*/];
                 }
             });

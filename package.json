@@ -1,18 +1,19 @@
 {
   "name": "wikimedia-extractors",
-  "version": "1.4.9",
+  "version": "1.5.4",
   "description": "",
   "main": "index.ts",
   "types": "index.d.ts",
   "scripts": {
     "dev": "nodemon index.ts",
     "build": "tsc",
-    "test": "nodemon index.ts"
+    "test": "nodemon test.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@supabase/supabase-js": "^2.39.1",
     "axios": "^1.6.2",
     "cheerio": "^1.0.0-rc.12",
     "crypto": "^1.0.1",

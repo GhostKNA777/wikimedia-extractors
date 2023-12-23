@@ -11,7 +11,8 @@ export class ShowBoxExtractor implements IExtractor {
 
   //logger = log.scope(this.name);
 
-  url = 'https://showbox.media/';
+  //url = 'https://showbox.media/';
+  url = 'https://www.showbox.media/';
 
   referer = 'https://showbox.media/';
 
@@ -70,18 +71,24 @@ export class ShowBoxExtractor implements IExtractor {
       const searchResult = await axiosInstance.get(`${this.url}/search?keyword=${encodeURIComponent(showName)}`);
       const searchResult$ = load(searchResult.data);
       const showLink = searchResult$('.film-name a').attr('href');
+      console.log("showLink",showLink);
 
       const showId = showLink?.split('/')[3];
+      console.log("showId",showId);
       const febBoxResult = await axiosInstance.get(`${this.url}/index/share_link?id=${showId}&type=${contentType === 'movie' ? '1' : '2'}`);
       if (febBoxResult.data.msg === 'success') {
         const febBoxData = await this.extractFebBox(febBoxResult.data.data.link, contentType, season, episode);
+        console.log(febBoxData);
         if (!febBoxData) return [];
 
         const quality = await getResolutionFromM3u8(febBoxData.url, true, {
           referer: this.referer,
         });
-        if (quality === 'Unknown') throw new Error('No quality found, so the stream is probably invalid');
-        //this.logger.debug(febBoxData);
+        //if (quality === 'Unknown') throw new Error('No quality found, so the stream is probably invalid');
+        if (quality === 'Unknown') {
+          quality == "Unknown"
+        }
+        console.log(febBoxData);
         return [
           {
             server: this.name,

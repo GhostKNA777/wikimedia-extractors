@@ -62,10 +62,10 @@ export class MoviesApiExtractor implements IExtractor {
       const key = this.getKey(stringData);
       //this.logger.debug(key);
 
-      const regex = /JScript\s*=\s*'([^']*)'/;
-      const base64EncryptedData = regex.exec(res2.data)![1];
+      const regex = /JScripts\s*=\s*'([^']*)'/;
+   const base64EncryptedData = regex.exec(res2.data)![1];
       const base64DecryptedData = JSON.parse(base64EncryptedData);
-      //this.logger.debug(base64DecryptedData);
+      console.log(base64DecryptedData);
 
       const salt = Buffer.from(base64DecryptedData.s, 'hex');
       const iv = Buffer.from(base64DecryptedData.iv, 'hex');
@@ -75,15 +75,19 @@ export class MoviesApiExtractor implements IExtractor {
 
       const encryptedBuffer = Buffer.from(base64DecryptedData.ct, 'base64');
       const decryptedBuffer = Buffer.concat([decipher.update(encryptedBuffer), decipher.final()]);
+      //console.log(decryptedBuffer);
 
       const decryptedString = decryptedBuffer.toString('utf-8');
-      //this.logger.debug(decryptedString);
+      console.log(decryptedString);
 
-      const sources = JSON.parse(decryptedString.match(/sources: ([^\]]*\])/)![1]);
-      const tracks = JSON.parse(decryptedString.match(/tracks: ([^]*?\}\])/)![1]);
+      //const sources = JSON.parse(decryptedString.match(/sources: ([^\]]*\])/)![1]);
+      const sources = JSON.parse(decryptedString);
+      console.log("sources",sources);
+      //const tracks = JSON.parse(decryptedString.match(/tracks: ([^]*?\}\])/)![1]);
+      //const tracks = JSON.parse(decryptedString.match(/tracks: ([^]*?\}\])/)![0]);
 
-      const subtitles = tracks.filter((it: any) => it.kind === 'captions');
-      const thumbnails = tracks.filter((it: any) => it.kind === 'thumbnails');
+      //const subtitles = tracks.filter((it: any) => it.kind === 'captions');1
+     // const thumbnails = tracks.filter((it: any) => it.kind === 'thumbnails');
 
       const highestQuality = await getResolutionFromM3u8(sources[0].file, true);
 
@@ -95,14 +99,14 @@ export class MoviesApiExtractor implements IExtractor {
           },
           type: sources[0].type === 'hls' ? 'm3u8' : 'mp4',
           quality: highestQuality,
-          subtitles: subtitles.map((it: any) => ({
+         /* subtitles: subtitles.map((it: any) => ({
             file: it.file,
             label: it.label,
             kind: it.kind,
-          })),
-          thumbnails: {
-            url: thumbnails[0]?.file,
-          },
+          })),*/
+         /* thumbnails: {
+           // url: thumbnails[0]?.file,
+          },*/
           proxySettings: {
             type: 'm3u8',
             referer: this.referer,

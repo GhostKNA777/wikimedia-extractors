@@ -11,7 +11,8 @@ export class BlackvidExtractor implements IExtractor {
 
   //logger = log.scope(this.name);
 
-  url = 'https://prod.api.blackvid.space/v3';
+  //url = 'https://prod.api.blackvid.space/v3';
+  url = 'https://blackvid.space/';
 
   private apiKey = 'b6055c533c19131a638c3d2299d525d5ec08a814';
 

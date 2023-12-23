@@ -59,7 +59,7 @@ class VidSrcExtractor implements IExtractor {
 
       if (!finalUrl.includes('list.m3u8')) throw new Error('Something went wrong during url decoding');
 
-      const subtitleData = await axiosInstance.get(`${this.subtitleUrl}${imdbId}`, {
+      const subtitleData = await axiosInstance.get(`${this.subtitleUrl}${imdbId}/sublanguageid-spa`, {
         headers: {
           'X-User-Agent': 'trailers.to-UA',
         },
@@ -70,9 +70,9 @@ class VidSrcExtractor implements IExtractor {
         accumulator[languageName] = accumulator[languageName] || [];
         if (accumulator[languageName].length < 5) {
           accumulator[languageName].push({
-            file: subtitle.SubDownloadLink,
-            label: subtitle.LanguageName,
-            kind: 'captions',
+            url: subtitle.SubDownloadLink,
+            lang: subtitle.LanguageName,
+           // kind: 'captions',
           });
         }
         return accumulator;

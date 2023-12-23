@@ -64,6 +64,7 @@ var TwoEmbedExtractor = /** @class */ (function () {
                         $ = (0, cheerio_1.load)(res.data);
                         iframeUrl = $('iframe').attr('data-src');
                         id = (_a = iframeUrl === null || iframeUrl === void 0 ? void 0 : iframeUrl.match(/\?id=(.*?)&/)) === null || _a === void 0 ? void 0 : _a[1];
+                        console.log("IDok:",id);
                         if (!id)
                             throw new Error('No id found');
                         return [4 /*yield*/, axios_1.axiosInstance.get("https://wishfast.top/e/".concat(id), {

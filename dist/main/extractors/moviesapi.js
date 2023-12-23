@@ -1,0 +1,113 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.MoviesApiExtractor = void 0;
+const cheerio_1 = require("cheerio");
+const crypto_1 = __importDefault(require("crypto"));
+const vm_1 = __importDefault(require("vm"));
+const utils_1 = require("./utils");
+const axios_1 = require("../utils/axios");
+class MoviesApiExtractor {
+    //logger = log.scope('MoviesApi');
+    url = 'https://moviesapi.club/';
+    referer = 'https://w1.moviesapi.club/';
+    getKey(stringData) {
+        const sandbox = {
+            JScripts: '',
+            CryptoJSAesJson: {
+                decrypt: (data, key) => {
+                    return JSON.stringify(key);
+                },
+            },
+        };
+        vm_1.default.createContext(sandbox);
+        const key = vm_1.default.runInContext(stringData, sandbox);
+        return key;
+    }
+    async extractUrls(tmdbId, type, season, episode) {
+        try {
+            const url = type === 'movie' ? `${this.url}movie/${tmdbId}` : `${this.url}tv/${tmdbId}-${season}-${episode}`;
+            const res = await axios_1.axiosInstance.get(url, {
+                headers: {
+                    referer: this.referer,
+                },
+            });
+            const res$ = (0, cheerio_1.load)(res.data);
+            const iframeUrl = res$('iframe').attr('src');
+            //this.logger.debug(iframeUrl);
+            if (!iframeUrl)
+                throw new Error('No iframe url found');
+            const res2 = await axios_1.axiosInstance.get(iframeUrl, {
+                headers: {
+                    referer: 'https://moviesapi.club/',
+                    Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+                    'Accept-Encoding': 'gzip, deflate, br',
+                    'Accept-Language': 'en-US,en;q=0.5',
+                    'Alt-Used': 'w1.moviesapi.club',
+                    Host: 'w1.moviesapi.club',
+                    TE: 'Trailers',
+                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:101.0) Gecko/20100101 Firefox/101.0',
+                },
+            });
+            const res2$ = (0, cheerio_1.load)(res2.data);
+            const stringData = res2$('body script').eq(2).html();
+            if (!stringData)
+                throw new Error('No script found');
+            const key = this.getKey(stringData);
+            //this.logger.debug(key);
+            const regex = /JScripts\s*=\s*'([^']*)'/;
+            const base64EncryptedData = regex.exec(res2.data)[1];
+            const base64DecryptedData = JSON.parse(base64EncryptedData);
+            console.log(base64DecryptedData);
+            const salt = Buffer.from(base64DecryptedData.s, 'hex');
+            const iv = Buffer.from(base64DecryptedData.iv, 'hex');
+            const derivedKey = crypto_1.default.pbkdf2Sync(key, salt, 1, 32, 'md5');
+            const decipher = crypto_1.default.createDecipheriv('aes-256-cbc', derivedKey, iv);
+            decipher.setAutoPadding(false);
+            const encryptedBuffer = Buffer.from(base64DecryptedData.ct, 'base64');
+            const decryptedBuffer = Buffer.concat([decipher.update(encryptedBuffer), decipher.final()]);
+            //console.log(decryptedBuffer);
+            const decryptedString = decryptedBuffer.toString('utf-8');
+            console.log(decryptedString);
+            //const sources = JSON.parse(decryptedString.match(/sources: ([^\]]*\])/)![1]);
+            const sources = JSON.parse(decryptedString);
+            console.log("sources", sources);
+            //const tracks = JSON.parse(decryptedString.match(/tracks: ([^]*?\}\])/)![1]);
+            //const tracks = JSON.parse(decryptedString.match(/tracks: ([^]*?\}\])/)![0]);
+            //const subtitles = tracks.filter((it: any) => it.kind === 'captions');1
+            // const thumbnails = tracks.filter((it: any) => it.kind === 'thumbnails');
+            const highestQuality = await (0, utils_1.getResolutionFromM3u8)(sources[0].file, true);
+            return [
+                {
+                    server: 'MoviesApi',
+                    source: {
+                        url: sources[0].file,
+                    },
+                    type: sources[0].type === 'hls' ? 'm3u8' : 'mp4',
+                    quality: highestQuality,
+                    /* subtitles: subtitles.map((it: any) => ({
+                       file: it.file,
+                       label: it.label,
+                       kind: it.kind,
+                     })),*/
+                    /* thumbnails: {
+                      // url: thumbnails[0]?.file,
+                     },*/
+                    proxySettings: {
+                        type: 'm3u8',
+                        referer: this.referer,
+                    },
+                },
+            ];
+        }
+        catch (err) {
+            if (err instanceof Error)
+                console.error(err.message);
+            return [];
+        }
+    }
+}
+exports.MoviesApiExtractor = MoviesApiExtractor;
+//# sourceMappingURL=moviesapi.js.map

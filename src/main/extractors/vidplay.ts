@@ -4,7 +4,6 @@ import { createCipheriv } from 'crypto';
 import { axiosInstance } from '../utils/axios';
 import { IExtractor } from './types';
 import { getResolutionFromM3u8 } from './utils';
-//import {Keys} from 'keyutil'
 
 export class VidPlayExtractor implements IExtractor {
   name = 'VidPlay';
@@ -17,7 +16,13 @@ export class VidPlayExtractor implements IExtractor {
 
   private async getKeys(): Promise<string[]> {
     // Thanks to @Claudemirovsky for the keys :D
-    const res = await axiosInstance.get('https://raw.githubusercontent.com/Claudemirovsky/worstsource-keys/keys/keys.json');
+   // const res = await axiosInstance.get('https://raw.githubusercontent.com/Claudemirovsky/worstsource-keys/keys/keys.json');
+   // const res = await axiosInstance.get('https://raw.githubusercontent.com/Claudemirovsky/worstsource-keys/keys/keys.json');
+    const res = await axiosInstance.get('https://raw.githubusercontent.com/J4zzyB1te7s/keys/keys/keys.json');
+    /* const res = {
+       data: ["Ulfq8O91cGKvi94f", "mYvO5ELP8hXtExZm"]
+     };*/
+    console.log(res.data);
     return res.data;
   }
 
@@ -108,11 +113,10 @@ export class VidPlayExtractor implements IExtractor {
     return url;
   }
 
-  async extractUrl(url: string): Promise<Source> {
+  async extractUrl(url: string): Promise<Source | undefined> {
     try {
-      //console.info("url:" + url);
       const fileUrl = await this.getFileUrl(`${url}&autostart=true`);
-      //console.info("extractUrl:" + fileUrl);
+      //console.info("src:" + fileUrl);
       const res = await axiosInstance.get(fileUrl, {
         headers: {
           referer: url,
@@ -120,7 +124,8 @@ export class VidPlayExtractor implements IExtractor {
       });
       //console.info("src2:" + res.data.result[0]);
       const source = res.data.result.sources[0].file;
-      //console.info("src2:" + source);
+     // console.info("src2:" + source);
+      //console.log(JSON.stringify(res.data.result.sources));
 
       const quality = await getResolutionFromM3u8(source, true);
 
@@ -138,17 +143,7 @@ export class VidPlayExtractor implements IExtractor {
       };
     } catch (error) {
       if (error instanceof Error) console.log(error.message);
-      return {
-        server: this.name,
-        source: {
-          url: 'NoFound',
-        },
-        type: 'm3u8',
-        quality: 'Unknown',
-        thumbnails: {
-          url: "thumbnail?.file",
-        },
-      };
+      return undefined;
     }
   }
 }

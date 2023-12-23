@@ -92,105 +92,75 @@ var VidSrcToExtractor = /** @class */ (function () {
         var decodedText = new TextDecoder().decode(decoded);
         return decodeURIComponent(decodeURIComponent(decodedText));
     };
-    VidSrcToExtractor.prototype.extractUrlss = function (imdbId, type, season, episode, server) {
+    VidSrcToExtractor.prototype.extractUrls = function (imdbId, type, season, episode) {
         return __awaiter(this, void 0, void 0, function () {
-            var sourcesData, mainUrl, res, $, dataId, sources, subtitles_1, error_1;
+            var mainUrl, res, $, dataId, sources, sourceUrlsPromise, sourceUrls, subtitles_1, error_1;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        sourcesData = [];
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 5, , 6]);
-                        console.log("imdbId:" + imdbId);
+                        _a.trys.push([0, 5, , 6]);
                         mainUrl = type === 'movie' ? "".concat(this.url, "movie/").concat(imdbId) : "".concat(this.url, "tv/").concat(imdbId, "/").concat(season, "/").concat(episode);
                         return [4 /*yield*/, axios_1.axiosInstance.get(mainUrl)];
-                    case 2:
+                    case 1:
                         res = _a.sent();
                         $ = (0, cheerio_1.load)(res.data);
                         dataId = $('a[data-id]').attr('data-id');
+                        console.log(dataId);
                         return [4 /*yield*/, axios_1.axiosInstance.get("".concat(this.mainUrl, "ajax/embed/episode/").concat(dataId, "/sources"))];
-                    case 3:
+                    case 2:
                         sources = _a.sent();
                         if (sources.data.status !== 200)
                             throw new Error('No sources found');
-                        /*const sourceUrlsPromise = sources.data.result.map(async (source: any) => {
-                          const encryptedUrl = await axiosInstance.get(`${this.mainUrl}ajax/embed/source/${source.id}`);
-                          //console.log(encryptedUrl);
-                          const decryptedUrl = this.decryptSourceUrl(encryptedUrl.data.result.url);
-                          //console.log("decypt:" +decryptedUrl);
-                          if (source.title === 'Vidstream') {
-                            const vidStreamUrl = await this.vidStreamExtractor.extractUrl(decryptedUrl);
-                            //console.log("vidStreamUrl:"+vidStreamUrl);
-                            return vidStreamUrl;
-                          }
-                          if (source.title === 'Filemoon') {
-                            const fileMoonUrl = await this.fileMoonExtractor.extractUrl(decryptedUrl);
-                            console.log("FilemoonUrl:"+fileMoonUrl?.source.url);
-                            return fileMoonUrl;
-                          }
-                          if (source.title === 'Vidplay') {
-                            const vidPlayUrl = await this.vidPlayExtractor.extractUrl(decryptedUrl);
-                            console.log("vidPlayUrl:"+vidPlayUrl?.source.url);
-                            return vidPlayUrl;
-                          }
-                  
-                        
-                          console.log("START:"+sourceUrlsPromise);
-                          return sourceUrlsPromise;
-                        });*/
-                        sources.data.result.forEach(function (source) { return __awaiter(_this, void 0, void 0, function () {
-                            var encryptedUrl, decryptedUrl, vidPlayUrl, filemoon;
+                        sourceUrlsPromise = sources.data.result.map(function (source) { return __awaiter(_this, void 0, void 0, function () {
+                            var encryptedUrl, decryptedUrl, vidPlayUrl;
                             return __generator(this, function (_a) {
                                 switch (_a.label) {
-                                    case 0:
-                                        console.log(source.title);
-                                        return [4 /*yield*/, axios_1.axiosInstance.get("".concat(this.mainUrl, "ajax/embed/source/").concat(source.id))];
+                                    case 0: return [4 /*yield*/, axios_1.axiosInstance.get("".concat(this.mainUrl, "ajax/embed/source/").concat(source.id))];
                                     case 1:
                                         encryptedUrl = _a.sent();
                                         decryptedUrl = this.decryptSourceUrl(encryptedUrl.data.result.url);
+                                        console.log("decypt:" + decryptedUrl);
                                         if (!(source.title === 'Vidplay')) return [3 /*break*/, 3];
                                         return [4 /*yield*/, this.vidPlayExtractor.extractUrl(decryptedUrl)];
                                     case 2:
                                         vidPlayUrl = _a.sent();
                                         console.log("vidPlayUrl:" + (vidPlayUrl === null || vidPlayUrl === void 0 ? void 0 : vidPlayUrl.source.url));
-                                        sourcesData.push(vidPlayUrl);
-                                        _a.label = 3;
-                                    case 3:
-                                        if (source.title === 'Filemoon') {
-                                            filemoon = void 0;
-                                            filemoon = {
-                                                server: 'Filemoon',
-                                                source: {
-                                                    url: decryptedUrl,
-                                                },
-                                                type: 'mp4',
-                                                quality: '1080p',
-                                                thumbnails: {
-                                                    url: "No Found",
-                                                },
-                                            };
-                                            sourcesData.push(filemoon);
-                                        }
-                                        return [2 /*return*/];
+                                        return [2 /*return*/, vidPlayUrl];
+                                    case 3: return [2 /*return*/, undefined];
                                 }
                             });
                         }); });
+                        return [4 /*yield*/, Promise.all(sourceUrlsPromise)];
+                    case 3:
+                        sourceUrls = (_a.sent()).filter(function (it) { return it !== undefined; });
                         return [4 /*yield*/, axios_1.axiosInstance.get("".concat(this.mainUrl, "ajax/embed/episode/").concat(dataId, "/subtitles"))];
                     case 4:
                         subtitles_1 = _a.sent();
-                        //console.log("sources:"+sourceUrls[0]);
-                        //console.log("subtitles:"+subtitles.data);
-                        sourcesData.forEach(function (sourceUrl) {
+                        console.log("sources:" + sourceUrls[0]);
+                        console.log("subtitles:" + subtitles_1.data);
+                        // Modificar cada objeto en el array subtitles.data
+                        subtitles_1.data.forEach(function (subtitle) {
+                            // Cambiar el nombre de la propiedad label a url
+                            subtitle.url = subtitle.file;
+                            //subtitle.label = subtitle.lang;
+                            // Eliminar la propiedad kind
+                            //delete subtitle.kind;
+                            // Puedes eliminar la propiedad label si no la necesitas más
+                            //delete subtitle.label;
+                        });
+                        // Puedes imprimir el array modificado si lo deseas
+                        console.log("subtitles (modified):", subtitles_1.data);
+                        // Asignar el array modificado a la propiedad subtitles de cada sourceUrl
+                        sourceUrls.forEach(function (sourceUrl) {
                             sourceUrl.subtitles = subtitles_1.data;
                         });
-                        return [2 /*return*/, sourcesData];
+                        return [2 /*return*/, sourceUrls];
                     case 5:
                         error_1 = _a.sent();
                         if (error_1 instanceof Error)
                             console.error(error_1.message);
-                        return [2 /*return*/, sourcesData];
+                        return [2 /*return*/, []];
                     case 6: return [2 /*return*/];
                 }
             });
